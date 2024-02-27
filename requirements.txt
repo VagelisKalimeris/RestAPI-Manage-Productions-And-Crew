@@ -1,0 +1,12 @@
+fastapi>=0
+SQLAlchemy>=0
+starlette>=0
+pydantic>=0
+pytest>=0
+assertpy>=0
+flake8>=0
+httpx==0.23.0
+pytest-ordering>=0
+python-dateutil>=0
+uvicorn>=0
+fastapi-middleware-logger~=0.0.5
