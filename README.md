@@ -7,6 +7,10 @@
   personnel conflicts arise.
 
 
+---
+### Requires Python 3.11
+
+--- 
 ## Design Choices & Limitations
 
 ### SQLite
