@@ -1,5 +1,5 @@
 ## Purpose
-- API that enables any tv/movie production company to shoot new shows. Hybrid between a working prototype & portfolio 
+API that enables any tv/movie production company to shoot new shows. Hybrid between a working prototype & portfolio 
   project.
 - Provides a way to manage crew, with operations like hire & fire. 
 - Enables scheduling of show productions, ensuring that necessary crew is available for their duration, and no 
