@@ -20,25 +20,26 @@ Choosing *SQLite* as the database, carried the following drawbacks:
 
 
 ## Design Choices
-### Role of BL
-Initial design intention was for DAL to not contain any complex logic, but only simple queries. The BL was meant to 
-implement the complexity of operations such as production scheduling, by reusing some of DAL's simple functions. 
+### Role of Business code
+Initial design intention was for data access code to not contain any complex logic, but only simple queries. The 
+business code was meant to carry the complexity of operations such as production scheduling, by reusing some of the 
+data access code's straightforward functions. 
 
-The intention clashed with *SQLite*'s lack of support for locking mechanisms(described above). Since serializing 
-transactions was the only way to ensure safety under future concurrency, to achieve this design, the DAL functions 
-would in some cases need to return without committing. It was chosen to avoid this design, to not heavily break 
-separation between the 2 layers. 
+The intention clashed with *SQLite*'s lack of support for locking mechanisms(described in limitatins). Since serializing 
+transactions was the only way to ensure safety under future concurrency, to achieve this design, the data access code 
+functions would in some cases need to return without committing. It was chosen to avoid this design, to not heavily 
+break separation between the 2 layers. 
 
-As such, at this point BL has no functional role, and could easily be removed, but since it adds no complexity nor
-affects performance, was left available for future use.  
+As such, at this point business code has no functional role, and could easily be removed, but since it adds no 
+complexity nor affects performance, was left inplace for any future use.  
 
-### No Joins
-No sql table joins were used in queries of this DAL implementation. This design was an experimentation and would not 
-use in a production setting. The approach increased add/update production & fire crew member, DAL code complexity, but 
-extra care and effort was put into making sure time/space efficiency was not sacrificed. 
+### No Joins Experiment
+No sql table joins were used in queries of the data access code implementation. This design was an experimentation and 
+would not use in a production setting. The approach increased add/update production & fire crew member, data access 
+code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed. 
 
-This choice also shifted weight towards integration testing, since doing dependency injection into current DAL would be
-quite tedious.
+This choice also shifted weight towards integration testing, since doing dependency injection into current data access 
+code would be quite tedious.
 
 
 ## API Documentation
@@ -57,7 +58,7 @@ Grouped test execution is prioritized by following order:
 
 All tests are currently being executed in this order by default: 
 - On GitHub pushes 
-- After Docker container startup and before the server is started
+- Between Docker container initialization and server is startup
 
 Common route calls exist between sanity & regression layers, but execution through FastApi TestClient is very 
 performant, so there is no need for caching. Merging these 2 layers would also be a valid approach.
