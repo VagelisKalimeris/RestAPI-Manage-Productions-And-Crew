@@ -1,26 +1,15 @@
 ## Purpose
-
-- API that enables any tv/movie production company to shoot new shows. 
-- Hybrid between a working prototype & portfolio project.
+- API that enables any tv/movie production company to shoot new shows. Hybrid between a working prototype & portfolio 
+  project.
 - Provides a way to manage crew, with operations like hire & fire. 
 - Enables scheduling of show productions, ensuring that necessary crew is available for their duration, and no 
   personnel conflicts arise.
 
 
----
-### Requires Python 3.11
-
---- 
-## Design Choices & Limitations
+## Limitations
 
 ### SQLite
-Choosing *SQLite* as the database, carried the following:
-
-#### Benefits
-- Lightweight execution under same *Docker* container.
-- Fast and trusted integration testing. See dedicated section below for more info.
-
-#### Drawbacks
+Choosing *SQLite* as the database, carried the following drawbacks:
 - Absense of nuanced locking mechanisms. To ensure db integrity under future concurrent execution environments, 
   serializing transactions was the only available choice. Dedicated section below describes how this further affected 
   design. 
@@ -29,6 +18,8 @@ Choosing *SQLite* as the database, carried the following:
   current implementation, so we can regard this flaw as minor.
 - No option of utilizing *asyncio*. The database does not support it.  
 
+
+## Design Choices
 ### Role of BL
 Initial design intention was for DAL to not contain any complex logic, but only simple queries. The BL was meant to 
 implement the complexity of operations such as production scheduling, by reusing some of DAL's simple functions. 
@@ -42,9 +33,9 @@ As such, at this point BL has no functional role, and could easily be removed, b
 affects performance, was left available for future use.  
 
 ### No Joins
-No sql table joins were used in queries of this DAL implementation, mostly as a challenge! The approach increased 
-add/update production & fire crew member, DAL code complexity, but extra care and effort was put into making sure 
-time/space efficiency was not sacrificed. 
+No sql table joins were used in queries of this DAL implementation. This design was an experimentation and would not 
+use in a production setting. The approach increased add/update production & fire crew member, DAL code complexity, but 
+extra care and effort was put into making sure time/space efficiency was not sacrificed. 
 
 This choice also shifted weight towards integration testing, since doing dependency injection into current DAL would be
 quite tedious.
@@ -64,10 +55,9 @@ Grouped test execution is prioritized by following order:
 
 *Unit* &rarr; *Smoke* &rarr; *Sanity* &rarr; *Regression*. 
 
-All tests are being executed in this order by default: 
+All tests are currently being executed in this order by default: 
 - On GitHub pushes 
-- After Docker container startup and before server startup
+- After Docker container startup and before the server is started
 
-Common route calls exist between sanity & regression layers but execution through FastApi TestClient is very 
-performant, so there is no need for design with a more complex solution like caching, in this case. Merging these 2 
-layers would also be a valid approach.
+Common route calls exist between sanity & regression layers, but execution through FastApi TestClient is very 
+performant, so there is no need for caching. Merging these 2 layers would also be a valid approach.
