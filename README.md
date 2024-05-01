@@ -9,7 +9,7 @@ API that enables any tv/movie production company to shoot new shows. Hybrid betw
 ## Limitations
 
 ### SQLite
-Choosing *SQLite* as the database, carried the following drawbacks:
+Choosing *SQLite* as this project's database, carried the following drawbacks:
 - Absense of nuanced locking mechanisms. To ensure db integrity under future concurrent execution environments, 
   serialized transactions were the only available choice. Dedicated section below describes how this further affected 
   design. 
@@ -50,7 +50,7 @@ Run server and visit [this page](http://127.0.0.1:8000/docs).
 Test client uses an in-memory test database which is always structurally identical to the production database, so there 
 is no need to worry about any divergence or sql incompatibilities between production and test databases. The test 
 database is being created, pre-populated with required entries according to test type, and destroyed with each single 
-or grouped test execution.
+or grouped test execution. This applies locally as well as in GitHub or Docker containers. 
 
 Grouped test execution is prioritized by following order:
 
