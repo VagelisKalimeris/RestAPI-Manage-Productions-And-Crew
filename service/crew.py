@@ -1,9 +1,9 @@
 from sqlalchemy import exc
 from sqlalchemy import desc # noqa
 
-from service.helpers import construct_crew_order_by_query_substring, validate_crew_member_and_new_fire_date
-from models.sql_alchemy.tables import Crew, ProdCrew, Production
-from utility.util import Error
+from service.helpers.query_constructors import construct_crew_order_by_query_substring, validate_crew_member_and_new_fire_date
+from models.data.sql_alchemy import Crew, ProdCrew, Production
+from models.common import Error
 
 
 def get_crew_member(db, member_id):

@@ -1,4 +1,4 @@
-from utility.util import Error
+from models.common import Error
 
 
 def construct_crew_order_by_query_substring(sort_by):

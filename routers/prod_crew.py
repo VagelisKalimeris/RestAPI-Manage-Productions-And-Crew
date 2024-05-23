@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from business.prod_crew import retrieve_available_crew
-from utility.validations import validate_start_end_dates
+from service.helpers.date_validators import validate_start_end_dates
 from routers.dependencies import get_db
-from utility.util import PrettyJSONResponse, Error
-from models.pydantic.prod_crew import SortCrewAvailabilityBy
+from models.common import PrettyJSONResponse, Error
+from models.route.prod_crew import SortCrewAvailabilityBy
 
 
 router = APIRouter()

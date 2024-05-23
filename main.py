@@ -10,7 +10,7 @@ from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logge
 
 from routers.utility_routes import lifespan
 from repository.sqlite_db import engine
-from models.sql_alchemy.tables import Base
+from models.data.sql_alchemy import Base
 from routers import prod_crew, utility_routes, productions, crew
 
 

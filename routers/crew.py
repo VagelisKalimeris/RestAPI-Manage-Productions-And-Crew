@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from routers.dependencies import get_db, DEFAULT_PAGE_SIZE
 from business.crew import retrieve_all_crew_members, retrieve_specific_crew_member, hire_crew_member, \
     update_crew_member_fire_date
-from utility.util import PrettyJSONResponse, Error
-from models.pydantic.crew import CrewMember, SortCrewBy
+from models.common import PrettyJSONResponse, Error
+from models.route.crew import CrewMember, SortCrewBy
 
 
 router = APIRouter()

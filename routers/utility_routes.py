@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, APIRouter
 
-from utility.util import PrettyJSONResponse
+from models.common import PrettyJSONResponse
 
 
 router = APIRouter()

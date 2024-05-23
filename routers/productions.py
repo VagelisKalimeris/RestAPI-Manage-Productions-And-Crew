@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from business.productions import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
     update_existing_production, delete_existing_production
 from routers.dependencies import get_db, DEFAULT_PAGE_SIZE
-from utility.util import PrettyJSONResponse, Error
-from models.pydantic.productions import ProductionDetails, SortProductionsBy, NewProdDates
+from models.common import PrettyJSONResponse, Error
+from models.route.productions import ProductionDetails, SortProductionsBy, NewProdDates
 
 
 router = APIRouter()
