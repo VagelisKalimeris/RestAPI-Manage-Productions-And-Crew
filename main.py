@@ -8,10 +8,10 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logger
 
-from service.routes.utility_routes import lifespan
-from persistence.sqlite_db import engine
-from persistence.sql_alch_models import Base
-from service.routes import crew, prod_crew, productions, utility_routes
+from routers.utility_routes import lifespan
+from repository.sqlite_db import engine
+from models.sql_alchemy.tables import Base
+from routers import prod_crew, utility_routes, productions, crew
 
 
 def customize_openapi_schema():

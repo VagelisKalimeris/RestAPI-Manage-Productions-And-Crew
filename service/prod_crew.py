@@ -1,8 +1,8 @@
 from sqlalchemy import exc, func, or_
 from sqlalchemy import asc, desc # noqa
 
-from data_access.helpers import construct_crew_availability_order_by_query_substring
-from persistence.sql_alch_models import ProdCrew, Production, Crew
+from service.helpers import construct_crew_availability_order_by_query_substring
+from models.sql_alchemy.tables import ProdCrew, Production, Crew
 from utility.util import Error
 
 

@@ -1,4 +1,4 @@
-from data_access.crew import get_crew_member, get_all_crew_members, insert_crew_member, update_crew_member
+from service.crew import get_crew_member, get_all_crew_members, insert_crew_member, update_crew_member
 
 
 def retrieve_all_crew_members(db, name, role, sort_by, limit, offset):

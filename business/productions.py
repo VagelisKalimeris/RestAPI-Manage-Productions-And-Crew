@@ -1,4 +1,4 @@
-from data_access.productions import add_production, get_all_productions, get_production, update_production_dates, \
+from service.productions import add_production, get_all_productions, get_production, update_production_dates, \
     drop_production
 
 
