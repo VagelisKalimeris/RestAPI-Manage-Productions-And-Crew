@@ -58,7 +58,7 @@ Grouped test execution is prioritized by following order:
 
 All tests are currently being executed in this order by default: 
 - On GitHub pushes 
-- Between Docker container initialization and server is startup
+- Between Docker container initialization and server startup
 
 Common route calls exist between sanity & regression layers, but execution through FastApi TestClient is very 
 performant, so there is no need for caching. Merging these 2 layers would also be a valid approach.
