@@ -18,7 +18,7 @@ Choosing *SQLite* as this project's database, carried the following drawbacks:
   current implementation, so we can regard this flaw as minor.
 - No option of utilizing *asyncio*. The database does not support it.
 
-### No repository
+### No repository layer
 Service and repository layers were merged in this implementation. This choice resulted from the combination of the 
 following two factors:
 - *SQLite*'s lack of support for locking mechanisms(described above).
