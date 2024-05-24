@@ -4,8 +4,8 @@ from datetime import date
 import pytest
 from assertpy import assert_that
 
-from models.common import Error
-from service.helpers.date_validators import validate_start_end_dates, date_ranges_overlap
+from models.shared_models import Error
+from services.helpers.date_validators import validate_start_end_dates, date_ranges_overlap
 
 
 @pytest.mark.run(order=0)

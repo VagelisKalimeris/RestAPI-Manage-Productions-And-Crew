@@ -1,4 +1,4 @@
-from service.sqlite_db import SessionLocal
+from services.database.sqlite_db import SessionLocal
 
 
 DEFAULT_PAGE_SIZE = 5

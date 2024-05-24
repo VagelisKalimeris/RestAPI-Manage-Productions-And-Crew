@@ -8,10 +8,10 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logger
 
-from routers.utility_routes import lifespan
-from service.sqlite_db import engine
-from models.data.sql_alchemy import Base
-from routers import prod_crew, utility_routes, productions, crew
+from routers.utility_router import lifespan
+from services.database.sqlite_db import engine
+from models.data.sql_alchemy_models import Base
+from routers import prod_crew_router, utility_router, productions_router, crew_router
 
 
 def customize_openapi_schema():
@@ -36,10 +36,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(lifespan=lifespan)
 
 # Enable routes
-app.include_router(utility_routes.router)
-app.include_router(crew.router)
-app.include_router(productions.router)
-app.include_router(prod_crew.router)
+app.include_router(utility_router.router)
+app.include_router(crew_router.router)
+app.include_router(productions_router.router)
+app.include_router(prod_crew_router.router)
 
 # Manage detailed logging
 log_abs_path = str(Path(__file__).resolve().parent) + '/logs/api_full.log'
