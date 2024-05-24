@@ -5,11 +5,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from business.productions import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
-    update_existing_production, delete_existing_production
-from service.dependencies import get_db, DEFAULT_PAGE_SIZE
-from utility.util import PrettyJSONResponse, Error
-from service.pydantic_models.productions import ProductionDetails, SortProductionsBy, NewProdDates
+from service.productions import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
+    update_production_dates, delete_existing_production
+from routers.dependencies import get_db, DEFAULT_PAGE_SIZE
+from models.common import PrettyJSONResponse, Error
+from models.route.productions import ProductionDetails, SortProductionsBy, NewProdDates
 
 
 router = APIRouter()
@@ -60,6 +60,7 @@ def create_production(new_prod_details: ProductionDetails, db: Session = Depends
     Registers given production.
     """
     # Check for errors
+    # todo: Pass individual params instead of model
     if isinstance(new_prod := schedule_production(db, new_prod_details), Error):
         raise HTTPException(status_code=new_prod.status, detail=new_prod.message)
 
@@ -75,8 +76,8 @@ def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depen
     Updates given production's dates, as long as no crew scheduling conflicts arise.
     """
     # Check for errors
-    if isinstance(updated_prod := update_existing_production(db, prod_id, new_dates.new_start,
-                                                             new_dates.new_end), Error):
+    if isinstance(updated_prod := update_production_dates(db, prod_id, new_dates.new_start,
+                                                          new_dates.new_end), Error):
         raise HTTPException(status_code=updated_prod.status, detail=updated_prod.message)
 
     return {

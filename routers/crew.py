@@ -5,11 +5,10 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from sqlalchemy.orm import Session
 
-from service.dependencies import get_db, DEFAULT_PAGE_SIZE
-from business.crew import retrieve_all_crew_members, retrieve_specific_crew_member, hire_crew_member, \
-    update_crew_member_fire_date
-from utility.util import PrettyJSONResponse, Error
-from service.pydantic_models.crew import CrewMember, SortCrewBy
+from routers.dependencies import get_db, DEFAULT_PAGE_SIZE
+from models.common import PrettyJSONResponse, Error
+from models.route.crew import CrewMember, SortCrewBy
+from service.crew import get_all_crew_members, get_crew_member, hire_crew_member, update_crew_member_fire_date
 
 
 router = APIRouter()
@@ -24,8 +23,7 @@ def detail_all_crew_members(name: str = None, role: str = None, sort_by: SortCre
     Returns all existing crew member details.
     """
     # Check for errors
-    if isinstance(crew := retrieve_all_crew_members(db, name, role, sort_by, page_size,
-                                                    (page_num - 1) * page_size), Error):
+    if isinstance(crew := get_all_crew_members(db, name, role, sort_by, page_size, (page_num - 1) * page_size), Error):
         raise HTTPException(status_code=crew.status, detail=crew.message)
 
     return {
@@ -45,7 +43,7 @@ def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)):
     Returns specific crew member's details.
     """
     # Check for errors
-    if isinstance(crew_member := retrieve_specific_crew_member(db, member_id), Error):
+    if isinstance(crew_member := get_crew_member(db, member_id), Error):
         raise HTTPException(status_code=crew_member.status, detail=crew_member.message)
 
     return {
@@ -61,7 +59,9 @@ def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(
     different ids. Fire date is optional, if not given they are considered permanent.
     """
     # Check for errors
-    if isinstance(crew_member_hire := hire_crew_member(db, crew_member_details), Error):
+    if isinstance(crew_member_hire := hire_crew_member(db, crew_member_details.role, crew_member_details.full_name,
+                                                       crew_member_details.hire_date, crew_member_details.fire_date),
+                  Error):
         raise HTTPException(status_code=crew_member_hire.status, detail=crew_member_hire.message)
 
     return {

@@ -1,9 +1,10 @@
 from sqlalchemy import exc
 from sqlalchemy import desc # noqa
 
-from data_access.helpers import construct_crew_order_by_query_substring, validate_crew_member_and_new_fire_date
-from persistence.sql_alch_models import Crew, ProdCrew, Production
-from utility.util import Error
+from service.helpers.query_constructors import construct_crew_order_by_query_substring, \
+    validate_crew_member_and_new_fire_date
+from models.data.sql_alchemy import Crew, ProdCrew, Production
+from models.common import Error
 
 
 def get_crew_member(db, member_id):
@@ -41,7 +42,7 @@ def get_all_crew_members(db, name, role, sort_by, limit, offset):
         return Error(e.args[0], 500)
 
 
-def insert_crew_member(db, role, full_name, hire_date, fire_date):
+def hire_crew_member(db, role, full_name, hire_date, fire_date):
     """
     Adds a new crew member to DB.
     """
@@ -55,7 +56,7 @@ def insert_crew_member(db, role, full_name, hire_date, fire_date):
         return Error(e.args[0], 500)
 
 
-def update_crew_member(db, member_id, op_type, fire_date):
+def update_crew_member_fire_date(db, member_id, op_type, fire_date):
     """
     Updates crew member's fire date in DB.
     """

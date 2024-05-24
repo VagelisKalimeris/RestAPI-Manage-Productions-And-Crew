@@ -1,13 +1,14 @@
 from sqlalchemy import exc, and_
 from sqlalchemy import desc # noqa
 
-from data_access.helpers import construct_production_order_by_query_substring, preprocess_production_new_dates
-from persistence.sql_alch_models import Production, ProdCrew, Crew
-from utility.util import Error
-from utility.validations import date_ranges_overlap
+from service.helpers.query_constructors import construct_production_order_by_query_substring, \
+    preprocess_production_new_dates
+from models.data.sql_alchemy import Production, ProdCrew, Crew
+from models.common import Error
+from service.helpers.date_validators import date_ranges_overlap
 
 
-def get_all_productions(db, min_date, max_date, title, sort_by, limit, offset):
+def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit, offset):
     """
     Queries db for all productions.
     """
@@ -29,7 +30,7 @@ def get_all_productions(db, min_date, max_date, title, sort_by, limit, offset):
         return Error(e.args[0], 500)
 
 
-def get_production(db, prod_id):
+def get_scheduled_production(db, prod_id):
     """
     Queries db for specific production.
     """
@@ -43,7 +44,7 @@ def get_production(db, prod_id):
         return Error(e.args[0], 500)
 
 
-def add_production(db, prod_details):
+def schedule_production(db, prod_details):
     """
     Adds new production to db.
     """
@@ -56,7 +57,7 @@ def add_production(db, prod_details):
         # Moving forward, for transaction to succeed, all roles demands need to be fulfilled
         for role, required_role_count in prod_details.crew_reqs.items():
 
-            # Bind active & available any crew members with this role
+            # Bind any active & available crew members with this role
             members_bound, checked_prod_ids = 0, []
             for member in db.query(Crew)\
                     .filter(Crew.role == role)\
@@ -150,7 +151,7 @@ def update_production_dates(db, prod_id, new_start, new_end):
         return Error(e.args[0], 500)
 
 
-def drop_production(db, prod_id):
+def delete_existing_production(db, prod_id):
     """
     Drops existing production from db.
     """

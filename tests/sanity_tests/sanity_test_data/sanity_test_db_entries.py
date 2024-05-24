@@ -1,7 +1,7 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from persistence.sql_alch_models import Crew, Production
+from models.data.sql_alchemy import Crew, Production
 
 
 """

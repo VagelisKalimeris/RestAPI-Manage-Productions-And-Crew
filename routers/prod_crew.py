@@ -3,12 +3,11 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from business.prod_crew import retrieve_available_crew
-from utility.validations import validate_start_end_dates
-from service.dependencies import get_db
-from utility.util import PrettyJSONResponse, Error
-from service.pydantic_models.prod_crew import SortCrewAvailabilityBy
-
+from service.helpers.date_validators import validate_start_end_dates
+from service.prod_crew import get_crew_availability
+from routers.dependencies import get_db
+from models.common import PrettyJSONResponse, Error
+from models.route.prod_crew import SortCrewAvailabilityBy
 
 router = APIRouter()
 
@@ -24,7 +23,7 @@ def retrieve_crew_availability(from_date: date, to_date: date, role: str = None,
     if isinstance(dates_analysis := validate_start_end_dates(from_date, to_date), Error):
         raise HTTPException(status_code=dates_analysis.status, detail=dates_analysis.message)
 
-    if isinstance(crew_counts := retrieve_available_crew(db, from_date, to_date, role, sort_by), Error):
+    if isinstance(crew_counts := get_crew_availability(db, from_date, to_date, role, sort_by), Error):
         raise HTTPException(status_code=crew_counts.status, detail=crew_counts.message)
 
     return {
