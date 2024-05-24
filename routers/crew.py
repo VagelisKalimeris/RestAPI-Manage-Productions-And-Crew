@@ -60,7 +60,7 @@ def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(
     """
     # Check for errors
     if isinstance(crew_member_hire := hire_crew_member(db, crew_member_details.role, crew_member_details.full_name,
-                                                         crew_member_details.hire_date, crew_member_details.fire_date),
+                                                       crew_member_details.hire_date, crew_member_details.fire_date),
                   Error):
         raise HTTPException(status_code=crew_member_hire.status, detail=crew_member_hire.message)
 

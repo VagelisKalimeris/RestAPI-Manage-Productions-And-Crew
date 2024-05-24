@@ -1,7 +1,8 @@
 from sqlalchemy import exc
 from sqlalchemy import desc # noqa
 
-from service.helpers.query_constructors import construct_crew_order_by_query_substring, validate_crew_member_and_new_fire_date
+from service.helpers.query_constructors import construct_crew_order_by_query_substring, \
+    validate_crew_member_and_new_fire_date
 from models.data.sql_alchemy import Crew, ProdCrew, Production
 from models.common import Error
 
