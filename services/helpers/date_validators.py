@@ -1,6 +1,6 @@
 from datetime import date
 
-from models.common import Error
+from models.shared.shared_models import Error
 
 
 def validate_start_end_dates(start_date, end_date):

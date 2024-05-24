@@ -3,11 +3,11 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from service.helpers.date_validators import validate_start_end_dates
-from service.prod_crew import get_crew_availability
-from routers.dependencies import get_db
-from models.common import PrettyJSONResponse, Error
-from models.route.prod_crew import SortCrewAvailabilityBy
+from services.helpers.date_validators import validate_start_end_dates
+from services.prod_crew_service import get_crew_availability
+from routers.router_dependencies import get_db
+from models.shared.shared_models import PrettyJSONResponse, Error
+from models.route.prod_crew_models import SortCrewAvailabilityBy
 
 router = APIRouter()
 

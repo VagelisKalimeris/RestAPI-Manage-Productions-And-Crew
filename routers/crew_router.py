@@ -5,10 +5,11 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from sqlalchemy.orm import Session
 
-from routers.dependencies import get_db, DEFAULT_PAGE_SIZE
-from models.common import PrettyJSONResponse, Error
-from models.route.crew import CrewMember, SortCrewBy
-from service.crew import get_all_crew_members, get_crew_member, hire_crew_member, update_crew_member_fire_date
+from config import DEFAULT_PAGE_SIZE
+from routers.router_dependencies import get_db
+from models.shared.shared_models import PrettyJSONResponse, Error
+from models.route.crew_models import CrewMember, SortCrewBy
+from services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, update_crew_member_fire_date
 
 
 router = APIRouter()
