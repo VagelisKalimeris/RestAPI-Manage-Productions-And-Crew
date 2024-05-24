@@ -81,9 +81,9 @@ def preprocess_production_new_dates(prod_id, new_start, new_end, db):
     """
     Validates given production & new dates against existing ones. Updates them, if necessary.
     """
-    from service.productions import get_production
+    from service.productions import get_scheduled_production
 
-    if isinstance(prod := get_production(db, prod_id), Error):
+    if isinstance(prod := get_scheduled_production(db, prod_id), Error):
         return prod
 
     if new_start == prod.start and new_end == prod.end:

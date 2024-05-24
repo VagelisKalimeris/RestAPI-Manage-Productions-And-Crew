@@ -7,7 +7,7 @@ from models.common import Error
 from service.helpers.date_validators import date_ranges_overlap
 
 
-def get_all_productions(db, min_date, max_date, title, sort_by, limit, offset):
+def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit, offset):
     """
     Queries db for all productions.
     """
@@ -29,7 +29,7 @@ def get_all_productions(db, min_date, max_date, title, sort_by, limit, offset):
         return Error(e.args[0], 500)
 
 
-def get_production(db, prod_id):
+def get_scheduled_production(db, prod_id):
     """
     Queries db for specific production.
     """
@@ -43,7 +43,7 @@ def get_production(db, prod_id):
         return Error(e.args[0], 500)
 
 
-def add_production(db, prod_details):
+def schedule_production(db, prod_details):
     """
     Adds new production to db.
     """
@@ -150,7 +150,7 @@ def update_production_dates(db, prod_id, new_start, new_end):
         return Error(e.args[0], 500)
 
 
-def drop_production(db, prod_id):
+def delete_existing_production(db, prod_id):
     """
     Drops existing production from db.
     """
