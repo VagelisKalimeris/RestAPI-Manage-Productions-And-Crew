@@ -10,6 +10,7 @@ from models.common import PrettyJSONResponse, Error
 from models.route.crew import CrewMember, SortCrewBy
 from service.crew import get_all_crew_members, get_crew_member, hire_crew_member, update_crew_member_fire_date
 
+
 router = APIRouter()
 
 
