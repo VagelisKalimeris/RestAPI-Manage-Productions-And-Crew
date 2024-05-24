@@ -4,7 +4,7 @@ from sqlalchemy import desc # noqa
 from services.helpers.query_constructors import construct_production_order_by_query_substring, \
     preprocess_production_new_dates
 from models.data.sql_alchemy_models import Production, ProdCrew, Crew
-from models.shared_models import Error
+from models.shared.shared_models import Error
 from services.helpers.date_validators import date_ranges_overlap
 
 

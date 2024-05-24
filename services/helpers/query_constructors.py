@@ -1,4 +1,4 @@
-from models.shared_models import Error
+from models.shared.shared_models import Error
 
 
 def construct_crew_order_by_query_substring(sort_by):
