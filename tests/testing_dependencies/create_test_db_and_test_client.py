@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, StaticPool
 from sqlalchemy.orm import sessionmaker
 
 from routers.dependencies import get_db
-from repository.sqlite_db import Base
+from service.sqlite_db import Base
 from fastapi.testclient import TestClient
 from main import app
 

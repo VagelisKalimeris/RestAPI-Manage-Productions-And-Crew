@@ -9,7 +9,7 @@ from fastapi.openapi.utils import get_openapi
 from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logger
 
 from routers.utility_routes import lifespan
-from repository.sqlite_db import engine
+from service.sqlite_db import engine
 from models.data.sql_alchemy import Base
 from routers import prod_crew, utility_routes, productions, crew
 

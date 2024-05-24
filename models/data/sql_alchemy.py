@@ -1,6 +1,6 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, Date, CheckConstraint
 from sqlalchemy import engine # noqa
-from repository.sqlite_db import Base
+from service.sqlite_db import Base
 
 
 class ProdCrew(Base):
