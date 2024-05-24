@@ -6,6 +6,46 @@ API that enables any tv/movie production company to shoot new shows. Hybrid betw
   personnel conflicts arise.
 
 
+## Design
+Productions have specific start/end dates and crew role requirements. Crew members(employees), have a specific role, 
+and can have a set fire date or not(fixed-term or indefinite contract). A crew member can only be working at one 
+production, at any given time.
+
+The main challenge with this project was to find an efficient way to relate crew members with production dates.
+
+For instance: 
+- To schedule a new production, there need to be available crew members during its date span, for each of role 
+  requirements. These crew members must be bound for this timeframe, so they cannot be allocated elsewhere.
+- To delete a production, its bound crew members must be released.
+- To extend a production's duration, all of its bound crew members must be available during the new timeframe.
+
+Similarly:
+- To fire a crew member, they must not be bound by any production after their fire date.
+- A crew member cannot be bound to any production after their fire date.
+- To inquire crew availability for a specific timeframe, we must gather all crew members that are not bound to any 
+  production.
+
+Two main tables were used:
+
+#### CREW
+
+| id | full_name          | role          | hire_date | fire_date  |
+|----|--------------------|---------------|-----------|------------|
+
+#### PRODUCTION
+
+| id | title             | start      | end        |
+|----|-------------------|------------|------------|
+
+Plus an association table binding crew to productions
+
+| prod_id | crew_id |
+|---------|---------|
+
+Using just the association entries, the dates from main tables, and performing interval overlap calculations, we infer
+validity and perform all required operations.
+
+
 ## Limitations
 
 ### SQLite
@@ -18,22 +58,19 @@ Choosing *SQLite* as this project's database, carried the following drawbacks:
   current implementation, so we can regard this flaw as minor.
 - No option of utilizing *asyncio*. The database does not support it.
 
-### No repository layer
-Service and repository layers were merged in this implementation. This choice resulted from the combination of the 
-following two factors:
-- *SQLite*'s lack of support for locking mechanisms(described above).
-- No joins implementation(described below).
-
-
-## Design Choices
-
-### No Joins Experiment
+### No Joins Implementation
 No sql table joins were used in queries of the data access code implementation. This design was an experimentation and 
 would not use in a production setting. The approach increased add/update production & fire crew member, data access 
 code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed. 
 
 This choice also shifted weight towards integration testing, since doing dependency injection into current service 
 code would be quite tedious.
+
+### No repository layer
+Service and repository layers are merged in this implementation. This choice resulted from the combination of the 
+following two factors:
+- *SQLite*'s lack of support for locking mechanisms(described above).
+- No joins implementation(described above).
 
 
 ## API Documentation
@@ -43,8 +80,8 @@ Run server and visit [this page](http://127.0.0.1:80/docs).
 ## Testing
 Test client uses an in-memory test database which is always structurally identical to the production database, so there 
 is no need to create test database container. 
-The test database is being created, pre-populated with required entries according to test type, and destroyed with each 
-single or grouped test execution. This applies locally as well as in GitHub or Docker containers. 
+The test database is being created, pre-populated with specific test suite entries, and destroyed with each single or 
+grouped test execution. This applies locally as well as in GitHub or Docker containers. 
 
 Grouped test execution is prioritized by following order:
 
