@@ -1,7 +1,9 @@
+from datetime import date
+
 from app.models.shared.shared_models import Error
 
 
-def construct_crew_order_by_query_substring(sort_by):
+def construct_crew_order_by_query_substring(sort_by) -> str | Error:
     """
     Constructs the substring required for query results ordering. Verifies input as extra safety.
     """
@@ -21,7 +23,7 @@ def construct_crew_order_by_query_substring(sort_by):
             return Error(f'Unsupported sort method: \'{sort_by}\'!', 422)
 
 
-def construct_crew_availability_order_by_query_substring(sort_by):
+def construct_crew_availability_order_by_query_substring(sort_by) -> str | Error:
     """
     Constructs the substring required for query results ordering. Verifies input as extra safety.
     """
@@ -37,7 +39,7 @@ def construct_crew_availability_order_by_query_substring(sort_by):
             return Error(f'Unsupported sort method: \'{sort_by}\'!', 422)
 
 
-def construct_production_order_by_query_substring(sort_by):
+def construct_production_order_by_query_substring(sort_by) -> str | Error:
     """
     Constructs the substring required for query results ordering. Verifies input as extra safety.
     """
@@ -57,7 +59,7 @@ def construct_production_order_by_query_substring(sort_by):
             return Error(f'Unsupported sort method: \'{sort_by}\'!', 422)
 
 
-def validate_crew_member_and_new_fire_date(member_id, op_type, fire_date, db):
+def validate_crew_member_and_new_fire_date(member_id, op_type, fire_date, db) -> None | Error:
     """
     Validates given crew member & new fire date against existing one.
     """
@@ -77,7 +79,7 @@ def validate_crew_member_and_new_fire_date(member_id, op_type, fire_date, db):
     return crew_member
 
 
-def preprocess_production_new_dates(prod_id, new_start, new_end, db):
+def preprocess_production_new_dates(prod_id, new_start, new_end, db) -> tuple[date, date] | Error:
     """
     Validates given production & new dates against existing ones. Updates them, if necessary.
     """

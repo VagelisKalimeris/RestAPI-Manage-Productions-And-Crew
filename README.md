@@ -1,6 +1,6 @@
 ## Purpose
 API that enables any tv/movie production company to shoot new shows. Hybrid between a working prototype & portfolio 
-  project.
+project.
 - Provides a way to manage crew, with operations like hire & fire. 
 - Enables scheduling of show productions, ensuring that necessary crew is available for their duration, and no 
   personnel conflicts arise.
@@ -11,8 +11,7 @@ Productions have specific start/end dates and crew role requirements. Crew membe
 and can have a set fire date or not(fixed-term or indefinite contract). A crew member can only be working at one 
 production, at any given time.
 
-The main challenge with this project was to find an efficient way to relate crew members with production dates.
-
+The main challenge with this project was to find an efficient way to relate crew members with production dates.  
 For instance: 
 - To schedule a new production, there need to be available crew members during its date span, for each of role 
   requirements. These crew members must be bound for this timeframe, so they cannot be allocated elsewhere.
@@ -61,7 +60,7 @@ Choosing *SQLite* as this project's database, carried the following drawbacks:
 ### No Joins Implementation
 No sql table joins were used in queries of the data access code implementation. This design was an experimentation and 
 would not use in a production setting. The approach increased add/update production & fire crew member, data access 
-code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed. 
+code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed.
 
 This choice also shifted weight towards integration testing, since doing dependency injection into current service 
 code would be quite tedious.
@@ -79,7 +78,7 @@ Run server and visit [this page](http://127.0.0.1:80/docs).
 
 ## Testing
 Test client uses an in-memory test database which is always structurally identical to the production database, so there 
-is no need to create test database container. 
+is no need to create test database container.  
 The test database is being created, pre-populated with specific test suite entries, and destroyed with each single or 
 grouped test execution. This applies locally as well as in GitHub or Docker containers. 
 

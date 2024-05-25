@@ -3,7 +3,7 @@ from datetime import date
 from app.models.shared.shared_models import Error
 
 
-def validate_start_end_dates(start_date, end_date):
+def validate_start_end_dates(start_date, end_date) -> None | Error:
     """
     Validates start date is not before end date, and start date is not past.
     """
@@ -13,7 +13,7 @@ def validate_start_end_dates(start_date, end_date):
         return Error('Start date cannot be past!', 422)
 
 
-def date_ranges_overlap(start_date_a, end_date_a, start_date_b, end_date_b):
+def date_ranges_overlap(start_date_a, end_date_a, start_date_b, end_date_b) -> bool:
     """
     Checks if two date ranges overlap with each other.
     """

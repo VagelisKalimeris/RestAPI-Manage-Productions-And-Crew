@@ -6,7 +6,7 @@ from app.models.data.sql_alchemy_models import ProdCrew, Production, Crew
 from app.models.shared.shared_models import Error
 
 
-def get_crew_availability(db, from_date, to_date, role, sort_by):
+def get_crew_availability(db, from_date, to_date, role, sort_by) -> dict | Error:
     """
     Retrieves available crew for given time period.
     """

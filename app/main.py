@@ -5,6 +5,7 @@ import logging
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
 from fastapi.openapi.utils import get_openapi
 from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logger
 
@@ -14,7 +15,7 @@ from app.services.database.sqlite_db import Base
 from app.routers import prod_crew_router, utility_router, productions_router, crew_router
 
 
-def customize_openapi_schema():
+def customize_openapi_schema() -> jsonable_encoder:
     """
     Updates OpenAPI documentation details for SWAGGER UI.
     """

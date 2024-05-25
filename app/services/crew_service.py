@@ -7,7 +7,7 @@ from app.models.data.sql_alchemy_models import Crew, ProdCrew, Production
 from app.models.shared.shared_models import Error
 
 
-def get_crew_member(db, member_id):
+def get_crew_member(db, member_id) -> Crew | Error:
     """
     Retrieves a specific crew member's details from DB.
     """
@@ -21,7 +21,7 @@ def get_crew_member(db, member_id):
         return Error(e.args[0], 500)
 
 
-def get_all_crew_members(db, name, role, sort_by, limit, offset):
+def get_all_crew_members(db, name, role, sort_by, limit, offset) -> tuple[list[Crew], int] | Error:
     """
     Retrieves all crew member details from DB.
     """
@@ -42,7 +42,7 @@ def get_all_crew_members(db, name, role, sort_by, limit, offset):
         return Error(e.args[0], 500)
 
 
-def hire_crew_member(db, role, full_name, hire_date, fire_date):
+def hire_crew_member(db, role, full_name, hire_date, fire_date) -> int | Error:
     """
     Adds a new crew member to DB.
     """
@@ -56,7 +56,7 @@ def hire_crew_member(db, role, full_name, hire_date, fire_date):
         return Error(e.args[0], 500)
 
 
-def update_crew_member_fire_date(db, member_id, op_type, fire_date):
+def update_crew_member_fire_date(db, member_id, op_type, fire_date) -> None | Error:
     """
     Updates crew member's fire date in DB.
     """

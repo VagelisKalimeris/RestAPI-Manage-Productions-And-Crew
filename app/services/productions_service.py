@@ -8,7 +8,8 @@ from app.models.shared.shared_models import Error
 from app.services.helpers.date_validators import date_ranges_overlap
 
 
-def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit, offset):
+def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit, offset) \
+        -> tuple[list[Production], int] | Error:
     """
     Queries db for all productions.
     """
@@ -30,7 +31,7 @@ def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit,
         return Error(e.args[0], 500)
 
 
-def get_scheduled_production(db, prod_id):
+def get_scheduled_production(db, prod_id) -> Production | Error:
     """
     Queries db for specific production.
     """
@@ -44,7 +45,7 @@ def get_scheduled_production(db, prod_id):
         return Error(e.args[0], 500)
 
 
-def schedule_production(db, title, start, end, crew_reqs):
+def schedule_production(db, title, start, end, crew_reqs) -> int | Error:
     """
     Adds new production to db.
     """
@@ -99,7 +100,7 @@ def schedule_production(db, title, start, end, crew_reqs):
         return Error(e.args[0], 500)
 
 
-def update_production_dates(db, prod_id, new_start, new_end):
+def update_production_dates(db, prod_id, new_start, new_end) -> None | Error:
     """
     Updates existing production dates in db.
     """
@@ -151,7 +152,7 @@ def update_production_dates(db, prod_id, new_start, new_end):
         return Error(e.args[0], 500)
 
 
-def delete_existing_production(db, prod_id):
+def delete_existing_production(db, prod_id) -> None | Error:
     """
     Drops existing production from db.
     """
