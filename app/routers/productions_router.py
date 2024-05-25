@@ -5,12 +5,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from config import DEFAULT_PAGE_SIZE
-from services.productions_service import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
+from app.config import DEFAULT_PAGE_SIZE
+from app.services.productions_service import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
     update_production_dates, delete_existing_production
-from routers.router_dependencies import get_db
-from models.shared.shared_models import PrettyJSONResponse, Error
-from models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
+from app.routers.router_dependencies import get_db
+from app.models.shared.shared_models import PrettyJSONResponse, Error
+from app.models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
 
 
 router = APIRouter()

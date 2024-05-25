@@ -1,4 +1,4 @@
-from models.shared.shared_models import Error
+from app.models.shared.shared_models import Error
 
 
 def construct_crew_order_by_query_substring(sort_by):
@@ -61,7 +61,7 @@ def validate_crew_member_and_new_fire_date(member_id, op_type, fire_date, db):
     """
     Validates given crew member & new fire date against existing one.
     """
-    from services.crew_service import get_crew_member
+    from app.services.crew_service import get_crew_member
 
     if isinstance(crew_member := get_crew_member(db, member_id), Error):
         return crew_member
@@ -81,7 +81,7 @@ def preprocess_production_new_dates(prod_id, new_start, new_end, db):
     """
     Validates given production & new dates against existing ones. Updates them, if necessary.
     """
-    from services.productions_service import get_scheduled_production
+    from app.services.productions_service import get_scheduled_production
 
     if isinstance(prod := get_scheduled_production(db, prod_id), Error):
         return prod

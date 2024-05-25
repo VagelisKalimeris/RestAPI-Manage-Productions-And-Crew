@@ -8,10 +8,10 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from fastapi_middleware_logger.fastapi_middleware_logger import add_custom_logger
 
-from routers.utility_router import lifespan
-from services.database.sqlite_db import engine
-from models.data.sql_alchemy_models import Base
-from routers import prod_crew_router, utility_router, productions_router, crew_router
+from app.routers.utility_router import lifespan
+from app.services.database.sqlite_db import engine
+from app.services.database.sqlite_db import Base
+from app.routers import prod_crew_router, utility_router, productions_router, crew_router
 
 
 def customize_openapi_schema():
@@ -22,7 +22,7 @@ def customize_openapi_schema():
         title='Manage Crew & Productions',
         version='2.8',
         summary='Crew management and show scheduling for production unit.',
-        description=open('README.md', 'r').read(350),
+        description=open('../README.md', 'r').read(350),
         routes=app.routes
     )
     app.openapi_schema = openapi_schema
@@ -42,7 +42,7 @@ app.include_router(productions_router.router)
 app.include_router(prod_crew_router.router)
 
 # Manage detailed logging
-log_abs_path = str(Path(__file__).resolve().parent) + '/logs/api_full.log'
+log_abs_path = str(Path(__file__).resolve().parent.parent) + '/logs/api_full.log'
 
 logging.basicConfig(level=logging.INFO, filename=log_abs_path,
                     format='%(asctime)s - %(levelname)s - %(message)s')

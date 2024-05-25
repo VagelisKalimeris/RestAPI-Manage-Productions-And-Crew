@@ -5,7 +5,7 @@ import pytest
 from assertpy import assert_that
 from dateutil.relativedelta import relativedelta
 
-from config import DEFAULT_PAGE_SIZE
+from app.config import DEFAULT_PAGE_SIZE
 from tests.testing_dependencies.create_test_db_and_test_client import client
 from tests.testing_dependencies.util import beautify_response
 

@@ -14,4 +14,4 @@ COPY . /schedule-shows-productions/
 
 
 # Run tests first, then start server
-CMD ["/bin/bash","-c","pytest -v; uvicorn main:app --reload --host 0.0.0.0 --port 80"]
+CMD ["/bin/bash","-c","pytest -v; uvicorn app.main:app --reload --host 0.0.0.0 --port 80"]

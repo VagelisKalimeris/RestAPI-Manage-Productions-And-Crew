@@ -1,10 +1,10 @@
 from sqlalchemy import exc
 from sqlalchemy import desc # noqa
 
-from services.helpers.query_constructors import construct_crew_order_by_query_substring, \
+from app.services.helpers.query_constructors import construct_crew_order_by_query_substring, \
     validate_crew_member_and_new_fire_date
-from models.data.sql_alchemy_models import Crew, ProdCrew, Production
-from models.shared.shared_models import Error
+from app.models.data.sql_alchemy_models import Crew, ProdCrew, Production
+from app.models.shared.shared_models import Error
 
 
 def get_crew_member(db, member_id):

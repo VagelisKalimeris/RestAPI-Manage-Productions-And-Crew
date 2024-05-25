@@ -1,6 +1,6 @@
 import os
 
-from models.data.sql_alchemy_models import Crew, Production, ProdCrew
+from app.models.data.sql_alchemy_models import Crew, Production, ProdCrew
 
 
 def drop_all_test_db_data(db):
