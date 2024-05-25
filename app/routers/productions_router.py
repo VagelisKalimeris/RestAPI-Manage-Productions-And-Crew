@@ -56,13 +56,13 @@ def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/productions', status_code=201, response_class=PrettyJSONResponse)
-def create_production(new_prod_details: ProductionDetails, db: Session = Depends(get_db)):
+def create_production(prod_details: ProductionDetails, db: Session = Depends(get_db)):
     """
     Registers given production.
     """
     # Check for errors
-    # todo: Pass individual params instead of model
-    if isinstance(new_prod := schedule_production(db, new_prod_details), Error):
+    if isinstance(new_prod := schedule_production(db, prod_details.title, prod_details.start, prod_details.end,
+                                                  prod_details.crew_reqs), Error):
         raise HTTPException(status_code=new_prod.status, detail=new_prod.message)
 
     return {
