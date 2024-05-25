@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> None:
     """
     Sets up compact logging, for all API requests.
     """
@@ -22,8 +22,10 @@ async def lifespan(app: FastAPI):
 
 
 @router.get('/status', status_code=200, response_class=PrettyJSONResponse)
-def api_status():
+def api_status() -> dict:
     """
     Utility route for testing api functionality.
     """
-    return {'message': 'Schedule shows productions API is up and running!'}
+    return {
+        'message': 'Schedule shows productions API is up and running!'
+    }

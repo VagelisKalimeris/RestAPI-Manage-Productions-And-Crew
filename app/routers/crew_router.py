@@ -20,7 +20,7 @@ router = APIRouter()
 def detail_all_crew_members(name: str = None, role: str = None, sort_by: SortCrewBy = None,
                             page_size: Annotated[int, Query(ge=1)] = DEFAULT_PAGE_SIZE,
                             page_num: Annotated[int, Query(ge=1)] = 1,
-                            db: Session = Depends(get_db)):
+                            db: Session = Depends(get_db)) -> dict:
     """
     Returns all existing crew member details.
     """
@@ -40,7 +40,7 @@ def detail_all_crew_members(name: str = None, role: str = None, sort_by: SortCre
 
 
 @router.get('/crew/{member_id}', status_code=200, response_class=PrettyJSONResponse)
-def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)):
+def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)) -> dict:
     """
     Returns specific crew member's details.
     """
@@ -55,7 +55,7 @@ def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/crew/', status_code=200, response_class=PrettyJSONResponse)
-def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(get_db)):
+def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(get_db)) -> dict:
     """
     Hires new crew member on given start date. Members with the same name can exist, since they will be assigned
     different ids. Fire date is optional, if not given they are considered permanent.
@@ -74,7 +74,7 @@ def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(
 
 @router.put('/crew/{member_id}/', status_code=200, response_class=PrettyJSONResponse)
 def update_fire_date_for_existing_crew_member(member_id: int, op_type: Literal['extend', 'shorten'],
-                                              new_date: Annotated[date, Body()], db: Session = Depends(get_db)):
+                                              new_date: Annotated[date, Body()], db: Session = Depends(get_db)) -> dict:
     """
     Fires existing crew member on given end date.
     """

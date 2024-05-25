@@ -20,7 +20,8 @@ router = APIRouter()
 def retrieve_all_scheduled_productions(min_date: date | None = date.min, max_date: date | None = date.max,
                                        title: str = None, sort_by: SortProductionsBy = None,
                                        page_size: Annotated[int, Query(ge=1)] = DEFAULT_PAGE_SIZE,
-                                       page_num: Annotated[int, Query(ge=1)] = 1, db: Session = Depends(get_db)):
+                                       page_num: Annotated[int, Query(ge=1)] = 1, db: Session = Depends(get_db)) \
+        -> dict:
     """
     Returns all scheduled productions details. Optional start/end dates filter results to given time range.
     """
@@ -41,7 +42,7 @@ def retrieve_all_scheduled_productions(min_date: date | None = date.min, max_dat
 
 
 @router.get('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
-def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)):
+def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)) -> dict:
     """
     Returns specific scheduled production details.
     """
@@ -56,7 +57,7 @@ def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/productions', status_code=201, response_class=PrettyJSONResponse)
-def create_production(prod_details: ProductionDetails, db: Session = Depends(get_db)):
+def create_production(prod_details: ProductionDetails, db: Session = Depends(get_db)) -> dict:
     """
     Registers given production.
     """
@@ -72,7 +73,7 @@ def create_production(prod_details: ProductionDetails, db: Session = Depends(get
 
 
 @router.put('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
-def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depends(get_db)):
+def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depends(get_db)) -> dict:
     """
     Updates given production's dates, as long as no crew scheduling conflicts arise.
     """
@@ -87,7 +88,7 @@ def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depen
 
 
 @router.delete('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
-def cancel_production(prod_id: str, db: Session = Depends(get_db)):
+def cancel_production(prod_id: str, db: Session = Depends(get_db)) -> dict:
     """
     Deletes given production.
     """
