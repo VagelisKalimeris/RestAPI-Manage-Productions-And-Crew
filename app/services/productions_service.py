@@ -1,11 +1,11 @@
 from sqlalchemy import exc, and_
 from sqlalchemy import desc # noqa
 
-from services.helpers.query_constructors import construct_production_order_by_query_substring, \
+from app.services.helpers.query_constructors import construct_production_order_by_query_substring, \
     preprocess_production_new_dates
-from models.data.sql_alchemy_models import Production, ProdCrew, Crew
-from models.shared.shared_models import Error
-from services.helpers.date_validators import date_ranges_overlap
+from app.models.data.sql_alchemy_models import Production, ProdCrew, Crew
+from app.models.shared.shared_models import Error
+from app.services.helpers.date_validators import date_ranges_overlap
 
 
 def get_all_scheduled_productions(db, min_date, max_date, title, sort_by, limit, offset):
@@ -44,24 +44,24 @@ def get_scheduled_production(db, prod_id):
         return Error(e.args[0], 500)
 
 
-def schedule_production(db, prod_details):
+def schedule_production(db, title, start, end, crew_reqs):
     """
     Adds new production to db.
     """
     try:
         # Initiate current transaction by adding the production
-        new_prod = Production(title=prod_details.title, start=prod_details.start, end=prod_details.end)
+        new_prod = Production(title=title, start=start, end=end)
         db.add(new_prod)
         db.flush()
 
         # Moving forward, for transaction to succeed, all roles demands need to be fulfilled
-        for role, required_role_count in prod_details.crew_reqs.items():
+        for role, required_role_count in crew_reqs.items():
 
             # Bind any active & available crew members with this role
             members_bound, checked_prod_ids = 0, []
             for member in db.query(Crew)\
                     .filter(Crew.role == role)\
-                    .filter(and_(Crew.hire_date <= prod_details.start, Crew.fire_date > prod_details.end))\
+                    .filter(and_(Crew.hire_date <= start, Crew.fire_date > end))\
                     .all():
                 if members_bound == required_role_count:
                     # We filled current role demands
@@ -76,7 +76,7 @@ def schedule_production(db, prod_details):
                     prod = db.query(Production)\
                         .filter(Production.id == bind.prod_id)\
                         .first()
-                    if date_ranges_overlap(prod.start, prod.end, prod_details.start, prod_details.end):
+                    if date_ranges_overlap(prod.start, prod.end, start, end):
                         overlap = True
                         break
                     else:

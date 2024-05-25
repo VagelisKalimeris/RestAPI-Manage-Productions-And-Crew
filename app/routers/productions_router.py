@@ -5,12 +5,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from config import DEFAULT_PAGE_SIZE
-from services.productions_service import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
-    update_production_dates, delete_existing_production
-from routers.router_dependencies import get_db
-from models.shared.shared_models import PrettyJSONResponse, Error
-from models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
+from app.config import DEFAULT_PAGE_SIZE
+from app.services.productions_service import get_all_scheduled_productions, schedule_production, \
+    get_scheduled_production, update_production_dates, delete_existing_production
+from app.routers.router_dependencies import get_db
+from app.models.shared.shared_models import PrettyJSONResponse, Error
+from app.models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
 
 
 router = APIRouter()
@@ -56,13 +56,13 @@ def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)):
 
 
 @router.post('/productions', status_code=201, response_class=PrettyJSONResponse)
-def create_production(new_prod_details: ProductionDetails, db: Session = Depends(get_db)):
+def create_production(prod_details: ProductionDetails, db: Session = Depends(get_db)):
     """
     Registers given production.
     """
     # Check for errors
-    # todo: Pass individual params instead of model
-    if isinstance(new_prod := schedule_production(db, new_prod_details), Error):
+    if isinstance(new_prod := schedule_production(db, prod_details.title, prod_details.start, prod_details.end,
+                                                  prod_details.crew_reqs), Error):
         raise HTTPException(status_code=new_prod.status, detail=new_prod.message)
 
     return {

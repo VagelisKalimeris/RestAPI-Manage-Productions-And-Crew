@@ -1,9 +1,9 @@
 from sqlalchemy import exc, func, or_
 from sqlalchemy import asc, desc # noqa
 
-from services.helpers.query_constructors import construct_crew_availability_order_by_query_substring
-from models.data.sql_alchemy_models import ProdCrew, Production, Crew
-from models.shared.shared_models import Error
+from app.services.helpers.query_constructors import construct_crew_availability_order_by_query_substring
+from app.models.data.sql_alchemy_models import ProdCrew, Production, Crew
+from app.models.shared.shared_models import Error
 
 
 def get_crew_availability(db, from_date, to_date, role, sort_by):

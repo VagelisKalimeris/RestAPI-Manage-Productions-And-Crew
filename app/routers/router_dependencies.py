@@ -1,4 +1,4 @@
-from services.database.sqlite_db import SessionLocal
+from app.services.database.sqlite_db import SessionLocal
 
 
 def get_db():
