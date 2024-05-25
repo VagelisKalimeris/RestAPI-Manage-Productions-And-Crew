@@ -9,7 +9,8 @@ from app.config import DEFAULT_PAGE_SIZE
 from app.routers.router_dependencies import get_db
 from app.models.shared.shared_models import PrettyJSONResponse, Error
 from app.models.route.crew_models import CrewMember, SortCrewBy
-from app.services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, update_crew_member_fire_date
+from app.services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, \
+    update_crew_member_fire_date
 
 
 router = APIRouter()

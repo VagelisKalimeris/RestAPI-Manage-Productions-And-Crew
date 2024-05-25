@@ -6,8 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.config import DEFAULT_PAGE_SIZE
-from app.services.productions_service import get_all_scheduled_productions, schedule_production, get_scheduled_production, \
-    update_production_dates, delete_existing_production
+from app.services.productions_service import get_all_scheduled_productions, schedule_production, \
+    get_scheduled_production, update_production_dates, delete_existing_production
 from app.routers.router_dependencies import get_db
 from app.models.shared.shared_models import PrettyJSONResponse, Error
 from app.models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
