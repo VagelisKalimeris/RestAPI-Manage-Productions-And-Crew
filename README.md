@@ -102,6 +102,7 @@ following two factors:
 - [ ] Use async/await
 - [ ] Refactor & split Service layer
 - [ ] Adapt tests for concurrency
+- [ ] User authentication
 
 
 [swagger]: [http://127.0.0.1:80/docs]
