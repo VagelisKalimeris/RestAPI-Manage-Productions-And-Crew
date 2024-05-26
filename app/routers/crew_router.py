@@ -7,8 +7,9 @@ from sqlalchemy.orm import Session
 
 from app.config import DEFAULT_PAGE_SIZE
 from app.routers.router_dependencies import get_db
-from app.models.shared.shared_models import PrettyJSONResponse, Error
-from app.models.route.crew_models import CrewMember, SortCrewBy
+from app.models.shared.shared_models import PrettyJSONResponse, Error, PaginationResult
+from app.models.route.crew_models import CrewMember, SortCrewBy, AllCrewMembersResult, CrewMemberResult, HireResult, \
+    FireResult
 from app.services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, \
     update_crew_member_fire_date
 
@@ -28,15 +29,8 @@ def detail_all_crew_members(name: str = None, role: str = None, sort_by: SortCre
     if isinstance(crew := get_all_crew_members(db, name, role, sort_by, page_size, (page_num - 1) * page_size), Error):
         raise HTTPException(status_code=crew.status, detail=crew.message)
 
-    return {
-        'message': 'Crew members successfully retrieved.',
-        'data': crew[0],
-        'pagination': {
-            'total_records': crew[1],
-            'current_page': page_num,
-            'total_pages': ceil(crew[1] / page_size)
-        }
-    }
+    return AllCrewMembersResult('Crew members successfully retrieved.', crew[0],
+                                PaginationResult(crew[1], page_num, ceil(crew[1] / page_size))).__dict__
 
 
 @router.get('/crew/{member_id}', status_code=200, response_class=PrettyJSONResponse)
@@ -48,10 +42,7 @@ def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)):
     if isinstance(crew_member := get_crew_member(db, member_id), Error):
         raise HTTPException(status_code=crew_member.status, detail=crew_member.message)
 
-    return {
-        'message': 'Crew member info successfully retrieved.',
-        'data': crew_member
-    }
+    return CrewMemberResult('Crew member info successfully retrieved.', crew_member).__dict__
 
 
 @router.post('/crew/', status_code=200, response_class=PrettyJSONResponse)
@@ -66,10 +57,7 @@ def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(
                   Error):
         raise HTTPException(status_code=crew_member_hire.status, detail=crew_member_hire.message)
 
-    return {
-        'message': 'Crew member hired successfully.',
-        'new_member_id': crew_member_hire,
-    }
+    return HireResult('Crew member hired successfully.', crew_member_hire).__dict__
 
 
 @router.put('/crew/{member_id}/', status_code=200, response_class=PrettyJSONResponse)
@@ -82,6 +70,4 @@ def update_fire_date_for_existing_crew_member(member_id: int, op_type: Literal['
     if isinstance(crew_member := update_crew_member_fire_date(db, member_id, op_type, new_date), Error):
         raise HTTPException(status_code=crew_member.status, detail=crew_member.message)
 
-    return {
-        'message': 'Crew member fire date updated successfully.'
-    }
+    return FireResult('Crew member fire date updated successfully.').__dict__

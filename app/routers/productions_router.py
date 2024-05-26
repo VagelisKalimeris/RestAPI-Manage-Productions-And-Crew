@@ -9,9 +9,9 @@ from app.config import DEFAULT_PAGE_SIZE
 from app.services.productions_service import get_all_scheduled_productions, schedule_production, \
     get_scheduled_production, update_production_dates, delete_existing_production
 from app.routers.router_dependencies import get_db
-from app.models.shared.shared_models import PrettyJSONResponse, Error
-from app.models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates
-
+from app.models.shared.shared_models import PrettyJSONResponse, Error, PaginationResult
+from app.models.route.productions_models import ProductionDetails, SortProductionsBy, NewProdDates, \
+    AllProductionsResult, ProductionResult, NewProductionResult, UpdateProductionResult, CancelProductionResult
 
 router = APIRouter()
 
@@ -29,15 +29,8 @@ def retrieve_all_scheduled_productions(min_date: date | None = date.min, max_dat
                                                          (page_num - 1) * page_size), Error):
         raise HTTPException(status_code=prods.status, detail=prods.message)
 
-    return {
-        'message': 'Details for scheduled productions were successfully retrieved.',
-        'data': prods[0],
-        'pagination': {
-            'total_records': prods[1],
-            'current_page': page_num,
-            'total_pages': ceil(prods[1] / page_size)
-        }
-    }
+    return AllProductionsResult('Details for scheduled productions were successfully retrieved.', prods[0],
+                                PaginationResult(prods[1], page_num, ceil(prods[1] / page_size))).__dict__
 
 
 @router.get('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
@@ -49,10 +42,7 @@ def retrieve_scheduled_production(prod_id: int, db: Session = Depends(get_db)):
         # Check for errors
         raise HTTPException(status_code=prod.status, detail=prod.message)
 
-    return {
-        'message': 'Details for production were successfully retrieved.',
-        'data': prod
-    }
+    return ProductionResult('Details for production were successfully retrieved.', prod).__dict__
 
 
 @router.post('/productions', status_code=201, response_class=PrettyJSONResponse)
@@ -65,10 +55,7 @@ def create_production(prod_details: ProductionDetails, db: Session = Depends(get
                                                   prod_details.crew_reqs), Error):
         raise HTTPException(status_code=new_prod.status, detail=new_prod.message)
 
-    return {
-        'message': 'Production was successfully scheduled.',
-        'new_prod_id': new_prod
-    }
+    return NewProductionResult('Production was successfully scheduled.', new_prod).__dict__
 
 
 @router.put('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
@@ -81,9 +68,7 @@ def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depen
                                                           new_dates.new_end), Error):
         raise HTTPException(status_code=updated_prod.status, detail=updated_prod.message)
 
-    return {
-        'message': f'Production dates for show: \'{prod_id}\', were successfully updated.'
-    }
+    return UpdateProductionResult(f'Production dates for show: \'{prod_id}\', were successfully updated.').__dict__
 
 
 @router.delete('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
@@ -95,6 +80,4 @@ def cancel_production(prod_id: str, db: Session = Depends(get_db)):
     if isinstance(deleted_prod := delete_existing_production(db, prod_id), Error):
         raise HTTPException(status_code=deleted_prod.status, detail=deleted_prod.message)
 
-    return {
-        'message': f'Production with id: \'{prod_id}\' was successfully cancelled.'
-    }
+    return CancelProductionResult(f'Production with id: \'{prod_id}\' was successfully cancelled.').__dict__

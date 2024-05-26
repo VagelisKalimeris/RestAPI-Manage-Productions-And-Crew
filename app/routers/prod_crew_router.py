@@ -7,7 +7,7 @@ from app.services.helpers.date_validators import validate_start_end_dates
 from app.services.prod_crew_service import get_crew_availability
 from app.routers.router_dependencies import get_db
 from app.models.shared.shared_models import PrettyJSONResponse, Error
-from app.models.route.prod_crew_models import SortCrewAvailabilityBy
+from app.models.route.prod_crew_models import SortCrewAvailabilityBy, CrewAvailabilityResult
 
 router = APIRouter()
 
@@ -26,10 +26,5 @@ def retrieve_crew_availability(from_date: date, to_date: date, role: str = None,
     if isinstance(crew_counts := get_crew_availability(db, from_date, to_date, role, sort_by), Error):
         raise HTTPException(status_code=crew_counts.status, detail=crew_counts.message)
 
-    return {
-        'message': 'Crew availability was successfully retrieved.',
-        'from_date': from_date,
-        'to_date': to_date,
-        'filtered_by_role': role,
-        'data': crew_counts
-    }
+    return CrewAvailabilityResult('Crew availability was successfully retrieved.', from_date, to_date, role,
+                                  crew_counts).__dict__
