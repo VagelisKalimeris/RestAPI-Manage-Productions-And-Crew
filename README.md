@@ -97,11 +97,6 @@ following two factors:
 ## Todos
 
 - [ ] Add swagger return schemas
-- [ ] Improve logging
-- [ ] Replace SQLite with Postgres container
-- [ ] Use async/await
-- [ ] Refactor & split Service layer
-- [ ] Adapt tests for concurrency
 - [ ] User authentication
 
 
