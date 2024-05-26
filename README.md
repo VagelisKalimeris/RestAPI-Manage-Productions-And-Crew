@@ -6,6 +6,10 @@ API that enables any tv/movie production company to shoot new shows. Hybrid betw
   personnel conflicts arise.
 
 
+## Swagger
+Run server and visit [this page](http://127.0.0.1:80/docs).
+
+
 ## Design
 Productions have specific start/end dates and crew role requirements. Crew members(employees), have a specific role, 
 and can have a set fire date or not(fixed-term or indefinite contract). A crew member can only be working at one 
@@ -46,6 +50,24 @@ Using just the association entries, the dates from main tables, and performing i
 validity and perform all required operations.
 
 
+## Testing
+Test client uses an in-memory test database which is always structurally identical to the production database, so there 
+is no need to create test database container. 
+The test database is being created, pre-populated with specific test suite entries, and destroyed with each single or 
+grouped test execution. This applies locally as well as in GitHub or Docker containers. 
+
+Grouped test execution is prioritized by following order:
+
+*Unit* &rarr; *Smoke* &rarr; *Sanity* &rarr; *Regression*. 
+
+All tests are currently being executed in this order by default: 
+- On GitHub pushes 
+- Between Docker container initialization and server startup
+
+Common route calls exist between sanity & regression layers, but execution through FastApi's TestClient is very 
+performant, so there is no need for caching. Merging these 2 test groups would also be a valid approach.
+
+
 ## Limitations
 
 ### SQLite
@@ -73,23 +95,9 @@ following two factors:
 - No joins implementation(described above).
 
 
-## API Documentation
-Run server and visit [this page](http://127.0.0.1:80/docs).
+## Todos
 
-
-## Testing
-Test client uses an in-memory test database which is always structurally identical to the production database, so there 
-is no need to create test database container. 
-The test database is being created, pre-populated with specific test suite entries, and destroyed with each single or 
-grouped test execution. This applies locally as well as in GitHub or Docker containers. 
-
-Grouped test execution is prioritized by following order:
-
-*Unit* &rarr; *Smoke* &rarr; *Sanity* &rarr; *Regression*. 
-
-All tests are currently being executed in this order by default: 
-- On GitHub pushes 
-- Between Docker container initialization and server startup
-
-Common route calls exist between sanity & regression layers, but execution through FastApi's TestClient is very 
-performant, so there is no need for caching. Merging these 2 test groups would also be a valid approach.
+- [ ] Add swagger return schemas
+- [ ] Improve logging
+- [ ] Replace SQLite with Postgres
+- [ ] Refactor & split Service layer
