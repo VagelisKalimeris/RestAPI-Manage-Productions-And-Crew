@@ -7,7 +7,7 @@ API that enables any tv/movie production company to shoot new shows. Hybrid betw
 
 
 ## Swagger
-Run server and visit [this page](http://127.0.0.1:80/docs).
+Run server and visit [this page][swagger].
 
 
 ## Design
@@ -41,13 +41,13 @@ Two main tables were used:
 | id | title             | start      | end        |
 |----|-------------------|------------|------------|
 
-Plus an association table binding crew to productions
+Plus an association table binding crew to productions.  
 
-| prod_id | crew_id |
-|---------|---------|
+Using just the association table entries, the dates from main tables, and performing interval overlap calculations, we 
+infer validity and perform all required operations.
 
-Using just the association entries, the dates from main tables, and performing interval overlap calculations, we infer
-validity and perform all required operations.
+All complex operations including database writes, have been carefully wrapped in [transactions][sqlite transactions] 
+to avoid race conditions.
 
 
 ## Testing
@@ -72,9 +72,8 @@ performant, so there is no need for caching. Merging these 2 test groups would a
 
 ### SQLite
 Choosing *SQLite* as this project's database, carried the following drawbacks:
-- Absense of nuanced locking mechanisms. To ensure db integrity under future concurrent execution environments, 
-  serialized transactions were the only available choice. Dedicated section below describes how this further affected 
-  design. 
+- Absense of nuanced locking mechanisms. To stay clear of race conditions under future concurrent execution 
+  environments, serialized transactions were the only available choice.
 - No respect for foreign key constraints. As such currently the prod_crew table accepts entries with production & crew 
   primary ids, that might not exist in the respective tables. This inconsistency though, cannot be achieved through
   current implementation, so we can regard this flaw as minor.
@@ -99,5 +98,11 @@ following two factors:
 
 - [ ] Add swagger return schemas
 - [ ] Improve logging
-- [ ] Replace SQLite with Postgres
+- [ ] Replace SQLite with Postgres container
+- [ ] Use async/await
 - [ ] Refactor & split Service layer
+- [ ] Adapt tests for concurrency
+
+
+[swagger]: [http://127.0.0.1:80/docs]
+[sqlite transactions]: [https://www.sqlite.org/transactional.html]
