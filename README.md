@@ -46,8 +46,8 @@ Plus an association table binding crew to productions.
 Using just the association table entries, the dates from main tables, and performing interval overlap calculations, we 
 infer validity and perform all required operations.
 
-All complex operations including database writes, have been carefully wrapped in [transactions][sqlite transactions] 
-to avoid race conditions.
+All complex operations including database writes, have been carefully wrapped in [serialized][sqlite transactions] 
+transactions to avoid race conditions in case of concurrent execution.
 
 
 ## Testing
