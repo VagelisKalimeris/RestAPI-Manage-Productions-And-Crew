@@ -1,0 +1,5 @@
+from assertpy import add_extension
+
+from tests.testing_dependencies.assertpy_extensions import safe_extract_response_key
+
+add_extension(safe_extract_response_key)
