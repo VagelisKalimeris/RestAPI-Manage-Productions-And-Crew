@@ -60,7 +60,7 @@ def hire_new_crew_member(crew_member_details: CrewMember, db: Session = Depends(
     return HireResult('Crew member hired successfully.', crew_member_hire).__dict__
 
 
-@router.put('/crew/{member_id}/', status_code=200, response_class=PrettyJSONResponse)
+@router.patch('/crew/{member_id}/', status_code=200, response_class=PrettyJSONResponse)
 def update_fire_date_for_existing_crew_member(member_id: int, op_type: Literal['extend', 'shorten'],
                                               new_date: Annotated[date, Body()], db: Session = Depends(get_db)):
     """

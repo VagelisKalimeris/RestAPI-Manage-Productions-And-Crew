@@ -60,7 +60,7 @@ def test_hire_new_crew_member(sanity_test_data):
 
 @pytest.mark.run(order=2)
 def test_update_fire_date_for_existing_crew_member(sanity_test_data):
-    response = client.put(f'http://localhost:8000/crew/{pytest.sanity_member.id}/?op_type=extend',
+    response = client.patch(f'http://localhost:8000/crew/{pytest.sanity_member.id}/?op_type=extend',
                           json=str(date.today() + relativedelta(years=3)))
 
     assert_that(response, beautify_response(response))\
@@ -71,7 +71,7 @@ def test_update_fire_date_for_existing_crew_member(sanity_test_data):
 
 @pytest.mark.run(order=2)
 def test_update_fire_date_for_non_existing_crew_member(sanity_test_data):
-    response = client.put(f'http://localhost:8000/crew/{pytest.non_existing_member_id}/?op_type=extend',
+    response = client.patch(f'http://localhost:8000/crew/{pytest.non_existing_member_id}/?op_type=extend',
                           json=str(date.today() + relativedelta(years=3)))
 
     assert_that(response, beautify_response(response))\

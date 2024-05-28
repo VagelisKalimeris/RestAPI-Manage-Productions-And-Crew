@@ -144,9 +144,9 @@ class TestProductionCrew:
         # Extend production by 1 month
         new_prod_dates = {'new_end': str(date.today() + relativedelta(years=3, months=1))}
 
-        put_response = client.put(f'http://127.0.0.1:8000/productions/{prod_to_update.id}', json=new_prod_dates)
+        patch_response = client.patch(f'http://127.0.0.1:8000/productions/{prod_to_update.id}', json=new_prod_dates)
 
-        assert_that(put_response, beautify_response(put_response))\
+        assert_that(patch_response, beautify_response(patch_response))\
             .safe_extract_response_key('message')\
             .is_equal_to(f'Production dates for show: \'{prod_to_update.id}\', were successfully updated.')
 
@@ -156,9 +156,9 @@ class TestProductionCrew:
 
         new_prod_dates = {'new_end': str(date.today() + relativedelta(years=1, months=4))}
 
-        put_response = client.put(f'http://127.0.0.1:8000/productions/{prod_to_update_id}', json=new_prod_dates)
+        patch_response = client.patch(f'http://127.0.0.1:8000/productions/{prod_to_update_id}', json=new_prod_dates)
 
-        assert_that(put_response, beautify_response(put_response))\
+        assert_that(patch_response, beautify_response(patch_response))\
             .safe_extract_response_key('detail', 500)\
             .is_equal_to('Unable to change production dates, due to other crew obligations during requested timeframe!')
 
