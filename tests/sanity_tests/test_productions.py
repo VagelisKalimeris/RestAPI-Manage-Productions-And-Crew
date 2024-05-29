@@ -63,10 +63,10 @@ def test_create_production(sanity_test_data):
 @pytest.mark.run(order=2)
 def test_update_production(sanity_test_data):
     response = client.patch(f'http://127.0.0.1:8000/productions/{pytest.sanity_prod.id}',
-                          json={
-                              'new_start': str(pytest.sanity_prod.start + relativedelta(months=1)),
-                              'new_end': str(pytest.sanity_prod.end + relativedelta(months=1))
-                          })
+                            json={
+                                'new_start': str(pytest.sanity_prod.start + relativedelta(months=1)),
+                                'new_end': str(pytest.sanity_prod.end + relativedelta(months=1))
+                            })
 
     assert_that(response, beautify_response(response))\
         .safe_extract_response_key(None)\
@@ -77,10 +77,10 @@ def test_update_production(sanity_test_data):
 @pytest.mark.run(order=2)
 def test_update_non_existing_production(sanity_test_data):
     response = client.patch(f'http://127.0.0.1:8000/productions/{pytest.non_existing_prod_id}',
-                          json={
-                              'new_start': str(pytest.sanity_prod.start + relativedelta(months=1)),
-                              'new_end': str(pytest.sanity_prod.end + relativedelta(months=1))
-                          })
+                            json={
+                                'new_start': str(pytest.sanity_prod.start + relativedelta(months=1)),
+                                'new_end': str(pytest.sanity_prod.end + relativedelta(months=1))
+                            })
 
     assert_that(response, beautify_response(response))\
         .safe_extract_response_key('detail', 500)\

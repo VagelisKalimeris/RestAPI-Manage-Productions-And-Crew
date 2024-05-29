@@ -93,7 +93,7 @@ class TestHireFireNewCrewMember:
     def test_fire_new_crew_member(self, regression_test_data):
         # Fire new employee 1 month from now
         client.patch(f'http://localhost:8000/crew/{pytest.regression_new_member_id}/?op_type=shorten',
-                   json=str(date.today() + relativedelta(months=1)))
+                     json=str(date.today() + relativedelta(months=1)))
 
         # Verify employee is fired
         get_response = client.get(f'http://127.0.0.1:8000/crew/{pytest.regression_new_member_id}')
@@ -109,7 +109,7 @@ class TestFireExistingCrewMember:
 
         # Fire an employee right after their last binding has ended
         client.patch(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
-                   json=str(date.today() + relativedelta(years=4, days=1)))
+                     json=str(date.today() + relativedelta(years=4, days=1)))
 
         # Verify employee is indeed fired
         get_response = client.get(f'http://127.0.0.1:8000/crew/{member_to_fire.id}')
@@ -127,7 +127,7 @@ class TestFireExistingCrewMember:
 
         # Attempt to fire an employee before their last binding has ended
         patch_response = client.patch(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
-                                  json=new_fire_date)
+                                      json=new_fire_date)
 
         # Verify employee is CANNOT be fired
         assert_that(patch_response, beautify_response(patch_response))\
