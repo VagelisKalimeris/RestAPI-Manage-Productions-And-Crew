@@ -58,7 +58,7 @@ def create_production(prod_details: ProductionDetails, db: Session = Depends(get
     return NewProductionResult('Production was successfully scheduled.', new_prod).__dict__
 
 
-@router.put('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
+@router.patch('/productions/{prod_id}', status_code=200, response_class=PrettyJSONResponse)
 def update_production(prod_id: int, new_dates: NewProdDates, db: Session = Depends(get_db)):
     """
     Updates given production's dates, as long as no crew scheduling conflicts arise.

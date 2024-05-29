@@ -114,7 +114,7 @@ class TestNewProductionWithoutCrew:
         new_prod_dates = {'new_start': str(date.today() + relativedelta(years=1, months=1)),
                           'new_end': str(date.today() + relativedelta(years=2, months=1))}
 
-        client.put(f'http://127.0.0.1:8000/productions/{prod_to_update_id}', json=new_prod_dates)
+        client.patch(f'http://127.0.0.1:8000/productions/{prod_to_update_id}', json=new_prod_dates)
 
         # Verify dates are changed
         get_response = client.get(f'http://127.0.0.1:8000/productions/{prod_to_update_id}')

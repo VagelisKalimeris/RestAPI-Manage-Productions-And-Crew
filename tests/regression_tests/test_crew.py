@@ -92,8 +92,8 @@ class TestHireFireNewCrewMember:
 
     def test_fire_new_crew_member(self, regression_test_data):
         # Fire new employee 1 month from now
-        client.put(f'http://localhost:8000/crew/{pytest.regression_new_member_id}/?op_type=shorten',
-                   json=str(date.today() + relativedelta(months=1)))
+        client.patch(f'http://localhost:8000/crew/{pytest.regression_new_member_id}/?op_type=shorten',
+                     json=str(date.today() + relativedelta(months=1)))
 
         # Verify employee is fired
         get_response = client.get(f'http://127.0.0.1:8000/crew/{pytest.regression_new_member_id}')
@@ -108,8 +108,8 @@ class TestFireExistingCrewMember:
         member_to_fire = pytest.regression_crew[2]
 
         # Fire an employee right after their last binding has ended
-        client.put(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
-                   json=str(date.today() + relativedelta(years=4, days=1)))
+        client.patch(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
+                     json=str(date.today() + relativedelta(years=4, days=1)))
 
         # Verify employee is indeed fired
         get_response = client.get(f'http://127.0.0.1:8000/crew/{member_to_fire.id}')
@@ -126,11 +126,11 @@ class TestFireExistingCrewMember:
         member_to_fire = pytest.regression_crew[3]
 
         # Attempt to fire an employee before their last binding has ended
-        put_response = client.put(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
-                                  json=new_fire_date)
+        patch_response = client.patch(f'http://localhost:8000/crew/{member_to_fire.id}/?op_type=shorten',
+                                      json=new_fire_date)
 
         # Verify employee is CANNOT be fired
-        assert_that(put_response, beautify_response(put_response))\
+        assert_that(patch_response, beautify_response(patch_response))\
             .safe_extract_response_key('detail', 500)\
             .contains('Cannot fire crew member:')\
             .contains('They are engaged in scheduled production!')
