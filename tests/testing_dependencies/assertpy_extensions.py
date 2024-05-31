@@ -1,4 +1,4 @@
-from assertpy import assert_that
+from assertpy import assert_that, add_extension
 
 
 def safe_extract_response_key(self, key, status_code=200):
@@ -20,3 +20,7 @@ def safe_extract_response_key(self, key, status_code=200):
         self.val = self.val.json()[key]
 
     return self
+
+
+# Make custom extension available to all tests
+add_extension(safe_extract_response_key)
