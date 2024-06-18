@@ -1,5 +1,6 @@
 ## Purpose
-API that enables any tv/movie production company to shoot new shows. Hybrid between a working prototype & portfolio 
+ Enables tv/movie production companies to schedule shows & employees.  
+ Hybrid between a working prototype & portfolio 
   project.
 - Provides a way to manage crew, with operations like hire & fire. 
 - Enables scheduling of show productions, ensuring that necessary crew is available for their duration, and no 
@@ -11,24 +12,28 @@ Run server and visit [this page][swagger].
 
 
 ## Design
-Productions have specific start/end dates and crew role requirements. Crew members(employees), have a specific role, 
-and can have a set fire date or not(fixed-term or indefinite contract). A crew member can only be working at one 
-production, at any given time.
+#### Specs
+Productions have specific start/end dates and crew role requirements.  
+Crew members(employees), have a specific role, and can have a set fire date or not(fixed-term or indefinite contract).  
+A crew member can only be working at one production, at any given time.
 
-The main challenge with this project was to find an efficient way to relate crew members with production dates.
-
+#### Challenge
+The main challenge was to find an efficient way to relate crew members with productions, all while supporting required 
+operations.  
 For instance: 
-- To schedule a new production, there need to be available crew members during its date span, for each of role 
-  requirements. These crew members must be bound for this timeframe, so they cannot be allocated elsewhere.
-- To delete a production, its bound crew members must be released.
+- To schedule a new production, we must first make sure there available crew members for each role requirement, during 
+  its length. These crew members must also be bound for this timeframe, so they cannot be allocated elsewhere.
+- To delete a production, its previously bound crew members must be released.
 - To extend a production's duration, all of its bound crew members must be available during the new timeframe.
 
 Similarly:
-- To fire a crew member, they must not be bound by any production after their fire date.
 - A crew member cannot be bound to any production after their fire date.
+- To fire a crew member before their current fore date, they must not be bound by any production after the new fire 
+  date.
 - To inquire crew availability for a specific timeframe, we must gather all crew members that are not bound to any 
-  production.
+  production during this time.
 
+#### Solution
 Two main tables were used:
 
 #### CREW
@@ -43,8 +48,8 @@ Two main tables were used:
 
 Plus an association table binding crew to productions.  
 
-Using just the association table entries, the dates from main tables, and performing interval overlap calculations, we 
-infer validity and perform all required operations.
+Using just the association table entries, the dates from two main tables, and performing **interval overlap 
+calculations**, we infer validity and perform all required operations.
 
 All complex operations including database writes, have been carefully wrapped in [serialized][sqlite transactions] 
 transactions to avoid race conditions in case of concurrent execution.
@@ -81,7 +86,7 @@ Choosing *SQLite* as this project's database, carried the following drawbacks:
 
 ### No Joins Implementation
 No sql table joins were used in queries of the data access code implementation. This design was an experimentation and 
-would not use in a production setting. The approach increased add/update production & fire crew member, data access 
+would not be used in a production setting. The approach increased add/update production & fire crew member, data access 
 code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed. 
 
 This choice also shifted weight towards integration testing, since doing dependency injection into current service 
