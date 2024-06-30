@@ -47,12 +47,20 @@ class SortCrewBy(str, Enum):
     contract_length = 'contract_length'
 
 
+class Member(BaseModel):
+    role: str
+    full_name: str
+    hire_date: date
+    fire_date: date
+    id: int
+
+
 class AllCrewMembersResult(BaseModel):
     """
     GET all crew response template.
     """
     message: str
-    data: list[dict]
+    data: list[Member]
     pagination: PaginationResult
 
 
@@ -61,7 +69,7 @@ class CrewMemberResult(BaseModel):
     GET crew member response template.
     """
     message: str
-    data: dict
+    data: Member
 
 
 class HireResult(BaseModel):

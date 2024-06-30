@@ -10,7 +10,7 @@ from app.routers.router_dependencies import get_db
 from app.models.shared.shared_models import PrettyJSONResponse, Error
 from app.models.route.pagination_models import PaginationResult
 from app.models.route.crew_models import CrewMember, SortCrewBy, AllCrewMembersResult, CrewMemberResult, HireResult, \
-    FireResult
+    FireResult, Member
 from app.services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, \
     update_crew_member_fire_date
 
@@ -33,12 +33,13 @@ def detail_all_crew_members(name: str = None, role: str = None, sort_by: SortCre
     return AllCrewMembersResult(
         message='Crew members successfully retrieved.',
         data=[
-            {
-                'role': member.role,
-                'full_name': member.full_name,
-                'hire_date': member.hire_date,
-                'fire_date': member.fire_date
-            }
+            Member(
+                role=member.role,
+                full_name=member.full_name,
+                hire_date=member.hire_date,
+                fire_date=member.fire_date,
+                id=member.id
+            )
             for member in crew[0]
         ],
         pagination=PaginationResult(
@@ -60,12 +61,13 @@ def detail_specific_crew_member(member_id: int, db: Session = Depends(get_db)) -
 
     return CrewMemberResult(
         message='Crew member info successfully retrieved.',
-        data={
-            'role': crew_member.role,
-            'full_name': crew_member.full_name,
-            'hire_date': crew_member.hire_date,
-            'fire_date': crew_member.fire_date
-        }
+        data=Member(
+            role=crew_member.role,
+            full_name=crew_member.full_name,
+            hire_date=crew_member.hire_date,
+            fire_date=crew_member.fire_date,
+            id=crew_member.id
+        )
     )
 
 
