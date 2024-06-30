@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, APIRouter
 
+from app.models.route.utility_models import ApiStatusResult
 from app.models.shared.shared_models import PrettyJSONResponse
 
 
@@ -22,8 +23,10 @@ async def lifespan(app: FastAPI):
 
 
 @router.get('/status', status_code=200, response_class=PrettyJSONResponse)
-def api_status():
+def api_status() -> ApiStatusResult:
     """
     Utility route for testing api functionality.
     """
-    return {'message': 'Schedule shows productions API is up and running!'}
+    return ApiStatusResult(
+        message='Schedule shows productions API is up and running!'
+    )
