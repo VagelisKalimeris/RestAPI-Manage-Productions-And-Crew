@@ -15,7 +15,7 @@ router = APIRouter()
 @router.get('/crew-availability', status_code=200, response_class=PrettyJSONResponse)
 def retrieve_crew_availability(from_date: date, to_date: date, role: str = None,
                                sort_by: SortCrewAvailabilityBy = None,
-                               db: Session = Depends(get_db)):
+                               db: Session = Depends(get_db)) -> CrewAvailabilityResult:
     """
     Returns available crew role counts for specific date range.
     """
@@ -26,5 +26,10 @@ def retrieve_crew_availability(from_date: date, to_date: date, role: str = None,
     if isinstance(crew_counts := get_crew_availability(db, from_date, to_date, role, sort_by), Error):
         raise HTTPException(status_code=crew_counts.status, detail=crew_counts.message)
 
-    return CrewAvailabilityResult('Crew availability was successfully retrieved.', from_date, to_date, role,
-                                  crew_counts).__dict__
+    return CrewAvailabilityResult(
+        message='Crew availability was successfully retrieved.',
+        from_date=from_date,
+        to_date=to_date,
+        filtered_by_role=role,
+        data=crew_counts
+    )
