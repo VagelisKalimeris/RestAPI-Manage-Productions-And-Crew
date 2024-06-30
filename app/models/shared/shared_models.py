@@ -1,7 +1,6 @@
 import json
 import typing
 
-from pydantic import BaseModel
 from starlette.responses import Response
 
 
