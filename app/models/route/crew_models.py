@@ -47,37 +47,33 @@ class SortCrewBy(str, Enum):
     contract_length = 'contract_length'
 
 
-class AllCrewMembersResult:
+class AllCrewMembersResult(BaseModel):
     """
     GET all crew response template.
     """
-    def __init__(self, message: str, data: dict, pagination: PaginationResult):
-        self.message = message
-        self.data = data
-        self.pagination = pagination
+    message: str
+    data: list[dict]
+    pagination: PaginationResult
 
 
-class CrewMemberResult:
+class CrewMemberResult(BaseModel):
     """
     GET crew member response template.
     """
-    def __init__(self, message: str, data: dict):
-        self.message = message
-        self.data = data
+    message: str
+    data: dict
 
 
-class HireResult:
+class HireResult(BaseModel):
     """
     Hire crew member response template.
     """
-    def __init__(self, message: str, new_member_id: int):
-        self.message = message
-        self.new_member_id = new_member_id
+    message: str
+    new_member_id: int
 
 
-class FireResult:
+class FireResult(BaseModel):
     """
     Fire crew member response template.
     """
-    def __init__(self, message: str):
-        self.message = message
+    message: str
