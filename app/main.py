@@ -20,9 +20,9 @@ def customize_openapi_schema():
     """
     openapi_schema = get_openapi(
         title='Manage Crew & Productions',
-        version='3.0',
+        version='3.2',
         summary='Crew management and show scheduling for production unit.',
-        description=open('./README.md', 'r').read(350),
+        description=open('./README.md', 'r').read(351),
         routes=app.routes
     )
     app.openapi_schema = openapi_schema
