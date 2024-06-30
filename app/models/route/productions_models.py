@@ -3,7 +3,7 @@ from datetime import date
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.shared.shared_models import PaginationResult
+from app.models.route.pagination_models import PaginationResult
 
 
 class ProductionDetails(BaseModel):
