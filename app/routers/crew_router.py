@@ -7,7 +7,8 @@ from sqlalchemy.orm import Session
 
 from app.config import DEFAULT_PAGE_SIZE
 from app.routers.router_dependencies import get_db
-from app.models.shared.shared_models import PrettyJSONResponse, Error, PaginationResult
+from app.models.shared.shared_models import PrettyJSONResponse, Error
+from app.models.route.pagination_models import PaginationResult
 from app.models.route.crew_models import CrewMember, SortCrewBy, AllCrewMembersResult, CrewMemberResult, HireResult, \
     FireResult
 from app.services.crew_service import get_all_crew_members, get_crew_member, hire_crew_member, \
