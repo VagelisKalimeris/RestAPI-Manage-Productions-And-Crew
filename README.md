@@ -95,7 +95,7 @@ two factors:
 
 ## Todos
 
-- [ ] Add swagger return schemas
+- [x] Add swagger return schemas
 - [ ] User authentication
 
 

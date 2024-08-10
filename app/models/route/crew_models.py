@@ -3,7 +3,7 @@ from datetime import date
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.shared.shared_models import PaginationResult
+from app.models.route.pagination_models import PaginationResult
 
 
 class CrewRole(Enum):
@@ -47,37 +47,41 @@ class SortCrewBy(str, Enum):
     contract_length = 'contract_length'
 
 
-class AllCrewMembersResult:
+class Member(BaseModel):
+    role: str
+    full_name: str
+    hire_date: date
+    fire_date: date
+    id: int
+
+
+class AllCrewMembersResult(BaseModel):
     """
     GET all crew response template.
     """
-    def __init__(self, message: str, data: dict, pagination: PaginationResult):
-        self.message = message
-        self.data = data
-        self.pagination = pagination
+    message: str
+    data: list[Member]
+    pagination: PaginationResult
 
 
-class CrewMemberResult:
+class CrewMemberResult(BaseModel):
     """
     GET crew member response template.
     """
-    def __init__(self, message: str, data: dict):
-        self.message = message
-        self.data = data
+    message: str
+    data: Member
 
 
-class HireResult:
+class HireResult(BaseModel):
     """
     Hire crew member response template.
     """
-    def __init__(self, message: str, new_member_id: int):
-        self.message = message
-        self.new_member_id = new_member_id
+    message: str
+    new_member_id: int
 
 
-class FireResult:
+class FireResult(BaseModel):
     """
     Fire crew member response template.
     """
-    def __init__(self, message: str):
-        self.message = message
+    message: str

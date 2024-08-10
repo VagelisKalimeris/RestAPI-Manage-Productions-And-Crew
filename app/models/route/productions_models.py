@@ -3,7 +3,7 @@ from datetime import date
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.shared.shared_models import PaginationResult
+from app.models.route.pagination_models import PaginationResult
 
 
 class ProductionDetails(BaseModel):
@@ -52,45 +52,47 @@ class SortProductionsBy(str, Enum):
     duration = 'duration'
 
 
-class AllProductionsResult:
+class Production(BaseModel):
+    title: str
+    start: date
+    end: date
+    id: int
+
+
+class AllProductionsResult(BaseModel):
     """
     GET all productions response template.
     """
-    def __init__(self, message: str, data: dict, pagination: PaginationResult):
-        self.message = message
-        self.data = data
-        self.pagination = pagination
+    message: str
+    data: list[Production]
+    pagination: PaginationResult
 
 
-class ProductionResult:
+class ProductionResult(BaseModel):
     """
     GET production response template.
     """
-    def __init__(self, message: str, data: dict):
-        self.message = message
-        self.data = data
+    message: str
+    data: Production
 
 
-class NewProductionResult:
+class NewProductionResult(BaseModel):
     """
     Schedule production response template.
     """
-    def __init__(self, message: str, new_prod_id: int):
-        self.message = message
-        self.new_prod_id = new_prod_id
+    message: str
+    new_prod_id: int
 
 
-class UpdateProductionResult:
+class UpdateProductionResult(BaseModel):
     """
     Update production response template.
     """
-    def __init__(self, message: str):
-        self.message = message
+    message: str
 
 
-class CancelProductionResult:
+class CancelProductionResult(BaseModel):
     """
     Cancel production response template.
     """
-    def __init__(self, message: str):
-        self.message = message
+    message: str
