@@ -1,10 +1,9 @@
 ## Purpose
- Enables tv/movie production companies to schedule shows & employees.  
- Hybrid between a working prototype & portfolio 
-  project.
-- Provides a way to manage crew, with operations like hire & fire. 
-- Enables scheduling of show productions, ensuring that necessary crew is available for their duration, and no 
-  personnel conflicts arise.
+Enables tv/movie production companies to schedule shows & manage crew.  
+Hybrid between a working prototype & portfolio project.  
+Provides:
+- crew management, with operations like hire & fire 
+- production scheduling, ensuring no personnel conflicts arise
 
 
 ## Swagger
@@ -12,31 +11,30 @@ Run server and visit [this page][swagger].
 
 
 ## Design
-#### Specs
+#### Specifications
 Productions have specific start/end dates and crew role requirements.  
-Crew members(employees), have a specific role, and can have a set fire date or not(fixed-term or indefinite contract).  
+Crew members(employees), have a specific role, and can have a set fire date(fixed-term) or no fire date(indefinite 
+contract).  
 A crew member can only be working at one production, at any given time.
 
 #### Challenge
-The main challenge was to find an efficient way to relate crew members with productions, all while supporting required 
-operations.  
+Find an efficient way to relate crew members with productions, all while supporting required date related operations.  
 For instance: 
-- To schedule a new production, we must first make sure there available crew members for each role requirement, during 
-  its length. These crew members must also be bound for this timeframe, so they cannot be allocated elsewhere.
-- To delete a production, its previously bound crew members must be released.
-- To extend a production's duration, all of its bound crew members must be available during the new timeframe.
+- To schedule a new production, there must be available crew members for each role requirement. These crew members 
+  should also be bound for this timeframe, so they cannot be allocated elsewhere.
+- To delete a scheduled production, its bound crew members must be released.
+- To change a scheduled production's duration, all its bound crew members must be available during the new timeframe.
 
 Similarly:
 - A crew member cannot be bound to any production after their fire date.
 - To fire a crew member before their current fore date, they must not be bound by any production after the new fire 
   date.
-- To inquire crew availability for a specific timeframe, we must gather all crew members that are not bound to any 
+- To inquire crew availability for a specific timeframe, we need all crew members that are not bound to any 
   production during this time.
 
-#### Solution
-Two main tables were used:
+To achieve all this two main tables were used:
 
-#### CREW
+##### CREW
 
 | id | full_name          | role          | hire_date | fire_date  |
 |----|--------------------|---------------|-----------|------------|
@@ -51,13 +49,12 @@ Plus an association table binding crew to productions.
 Using just the association table entries, the dates from two main tables, and performing **interval overlap 
 calculations**, we infer validity and perform all required operations.
 
-All complex operations including database writes, have been carefully wrapped in [serialized][sqlite transactions] 
+All complex operations containing database writes, have been carefully wrapped with [serialized][sqlite transactions] 
 transactions to avoid race conditions in case of concurrent execution.
 
 
 ## Testing
-Test client uses an in-memory test database which is always structurally identical to the production database, so there 
-is no need to create test database container. 
+Test client uses an in-memory test database which is always structurally identical to the production database. 
 The test database is being created, pre-populated with specific test suite entries, and destroyed with each single or 
 grouped test execution. This applies locally as well as in GitHub or Docker containers. 
 
@@ -86,15 +83,12 @@ Choosing *SQLite* as this project's database, carried the following drawbacks:
 
 ### No Joins Implementation
 No sql table joins were used in queries of the data access code implementation. This design was an experimentation and 
-would not be used in a production setting. The approach increased add/update production & fire crew member, data access 
-code complexity, but extra care and effort was put into making sure time/space efficiency was not sacrificed. 
+should not be used in a production setting. The approach increased some code complexity for some operations, but extra 
+care and effort was put into not sacrificing time/space efficiency. 
 
-This choice also shifted weight towards integration testing, since doing dependency injection into current service 
-code would be quite tedious.
-
-### No repository layer
-Service and repository layers are merged in this implementation. This choice resulted from the combination of the 
-following two factors:
+### No repository
+Service and repository are merged in this implementation. This choice resulted from the combination of the following 
+two factors:
 - *SQLite*'s lack of support for locking mechanisms(described above).
 - No joins implementation(described above).
 
