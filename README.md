@@ -6,6 +6,11 @@ Provides:
 - production scheduling, ensuring no personnel conflicts arise
 
 
+## Execution
+- Run `docker-compose up` to start docker container
+- Install dependencies and run `uvicorn app.main:app --reload --host 0.0.0.0 --port 80` to start local server
+
+
 ## Swagger
 Run server and visit [this page][swagger].
 
@@ -96,6 +101,7 @@ two factors:
 ## Todos
 
 - [x] Add swagger return schemas
+- [ ] Replace sqlite with async postgres container and lift remaining limitations 
 - [ ] User authentication
 
 
