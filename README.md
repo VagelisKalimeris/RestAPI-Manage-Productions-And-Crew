@@ -99,5 +99,5 @@ two factors:
 - [ ] User authentication
 
 
-[swagger]: http://127.0.0.1:80/docs
+[swagger]: http://0.0.0.0:/docs
 [sqlite transactions]: https://www.sqlite.org/transactional.html
