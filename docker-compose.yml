@@ -1,0 +1,5 @@
+services:
+  productions-api-container:
+    build: .
+    ports:
+      - '80:80'
